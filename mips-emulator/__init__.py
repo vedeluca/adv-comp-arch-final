@@ -25,9 +25,11 @@ def instruction_to_hex(input_box, output_box, register_handler):
     instruction = instruction_factory(arr[0], register_handler, arr[1], arr[2], arr[3])
     instruct_hex = instruction.print()
     output_box.insert(END, instruct_hex)
+    # remove later
+    instruction.run()
+    reg = register_handler.get(arr[1])
+    print(reg.get_value())
 
 
 if __name__ == "__main__":
     main()
-
-

@@ -64,3 +64,6 @@ class AddInstruction(IInstruction):
         rs = register_handler.get(arg2)
         immediate = int(arg3)
         super().__init__(opcode, rs, rt, immediate)
+
+    def run(self):
+        self.rt.set_value(self.rs.get_value() + self.immediate)
