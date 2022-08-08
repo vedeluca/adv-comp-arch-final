@@ -1,4 +1,8 @@
-def instruction_factory(opcode="+", rs="$0", rt="$1", immediate=0, rd="$2", shamt=0, funct="?", address="?"):
+from registers import Register
+
+
+def instruction_factory(opcode="+", rs=Register(), rt=Register(), immediate=0, rd=Register(), shamt=0, funct="?",
+                        address="?"):
     if opcode == "+":
         return RInstruction(opcode, rs, rt, rd, shamt, funct)
     elif opcode == "l":
