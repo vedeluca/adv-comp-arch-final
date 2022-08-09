@@ -23,13 +23,13 @@ class RInstruction(Instruction):
         self.funct = funct
 
     def print(self):
-        opcode_hex = self.opcode.encode('utf-8').hex()
-        rs_hex = self.rs.get_name().encode('utf-8').hex()
-        rt_hex = self.rt.get_name().encode('utf-8').hex()
-        rd_hex = self.rd.get_name().encode('utf-8').hex()
-        shamt_hex = hex(self.shamt)
-        funct_hex = hex(self.funct)
-        return f'{opcode_hex}, {rs_hex}, {rt_hex}, {rd_hex}, {shamt_hex}, {funct_hex}'
+        opcode_print = self.opcode
+        rs_print = self.rs.get_name()
+        rt_print = self.rt.get_name()
+        rd_print = self.rd.get_name()
+        shamt_print = hex(self.shamt)
+        funct_print = hex(self.funct)
+        return f'{opcode_print}, {rs_print}, {rt_print}, {rd_print}, {shamt_print}, {funct_print}\n'
 
 
 class IInstruction(Instruction):
@@ -40,11 +40,11 @@ class IInstruction(Instruction):
         self.immediate = immediate
 
     def print(self):
-        opcode_hex = self.opcode.encode('utf-8').hex()
-        rs_hex = self.rs.get_name().encode('utf-8').hex()
-        rt_hex = self.rt.get_name().encode('utf-8').hex()
-        immediate_hex = hex(self.immediate)
-        return f'{opcode_hex}, {rs_hex}, {rt_hex}, {immediate_hex}'
+        opcode_print = self.opcode
+        rs_print = self.rs.get_name()
+        rt_print = self.rt.get_name()
+        immediate_print = hex(self.immediate)
+        return f'{opcode_print}, {rs_print}, {rt_print}, {immediate_print}\n'
 
 
 class JInstruction(Instruction):
@@ -53,9 +53,9 @@ class JInstruction(Instruction):
         self.address = address
 
     def print(self):
-        opcode_hex = self.opcode.encode('utf-8').hex()
-        address_hex = self.address.encode('utf-8').hex()
-        return f'{opcode_hex}, {address_hex}'
+        opcode_print = self.opcode
+        address_print = self.address
+        return f'{opcode_print}, {address_print}\n'
 
 
 class AddInstruction(IInstruction):

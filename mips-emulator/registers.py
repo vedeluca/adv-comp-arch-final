@@ -27,6 +27,16 @@ class RegisterHandler:
         else:
             raise ValueError(name)
 
+    def print(self):
+        zero_print = hex(self._zero.get_value())
+        one_print = hex(self._one.get_value())
+        two_print = hex(self._two.get_value())
+        three_print = hex(self._three.get_value())
+        return f'$0 = {zero_print}\n' \
+               f'$1 = {one_print}\n' \
+               f'$2 = {two_print}\n' \
+               f'$3 = {three_print}\n'
+
 
 class Register:
     def __init__(self, name="$0"):
