@@ -5,30 +5,45 @@ from registers import *
 
 def main():
     register_handler = RegisterHandler()
-    window = Tk()
-    window.title("mips emulator")
-    window.geometry("250x250")
-    input_box = Text(window, height=5, width=100)
-    output_box = Text(window, height=5, width=100)
-    hex_btn = Button(window, text="hex", command=lambda: instruction_to_hex(input_box, output_box, register_handler))
-    input_box.pack()
-    output_box.pack()
-    hex_btn.pack()
-    window.mainloop()
+    root = Tk()
+    root.geometry("400x150")
+    root.title("mips emulator")
+    root.columnconfigure(0, weight=1)
+    root.columnconfigure(1, weight=1)
+    root.columnconfigure(2, weight=1)
+    input_label = Label(root, text="Input")
+    input_label.grid(column=0, row=0)
+    input_box = Text(root, height=5, width=100)
+    input_box.grid(column=0, row=1)
+    instructions_label = Label(root, text="Basic")
+    instructions_label.grid(column=1, row=0)
+    instructions_box = Text(root, height=5, width=100)
+    instructions_box.grid(column=1, row=1)
+    registers_label = Label(root, text="Registers")
+    registers_label.grid(column=2, row=0)
+    registers_box = Text(root, height=5, width=100)
+    registers_box.grid(column=2, row=1)
+    run_btn = Button(root, text="Run", command=lambda: run_instructions(input_box,
+                                                                        instructions_box,
+                                                                        registers_box,
+                                                                        register_handler))
+    run_btn.grid(column=1, row=2)
+    root.mainloop()
 
 
-def instruction_to_hex(input_box, output_box, register_handler):
+def run_instructions(input_box, instructions_box, registers_box, register_handler):
+    instructions_box.delete('1.0', END)
+    registers_box.delete('1.0', END)
     instruct_text = input_box.get("1.0", END)
-    arr = instruct_text.split()
-    if len(arr) < 4:
-        raise ValueError(arr)
-    instruction = instruction_factory(arr[0], register_handler, arr[1], arr[2], arr[3])
-    instruct_hex = instruction.print()
-    output_box.insert(END, instruct_hex)
-    # remove later
-    instruction.run()
-    reg = register_handler.get(arr[1])
-    print(reg.get_value())
+    lines = instruct_text.split('\n')
+    for line in lines:
+        arr = line.split()
+        if len(arr) < 4:
+            break
+        instruction = instruction_factory(arr[0], register_handler, arr[1], arr[2], arr[3])
+        instructions_box.insert(END, instruction.print())
+        instruction.run()
+    registers_box.insert(END, register_handler.print())
 
 
 if __name__ == "__main__":
