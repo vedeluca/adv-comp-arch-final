@@ -6,7 +6,7 @@ from registers import *
 def main():
     register_handler = RegisterHandler()
     root = Tk()
-    root.geometry("400x150")
+    root.geometry("500x150")
     root.title("mips emulator")
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=1)
@@ -38,8 +38,10 @@ def run_instructions(input_box, instructions_box, registers_box, register_handle
     lines = instruct_text.split('\n')
     for line in lines:
         arr = line.split()
+        # TODO: replace with syscall
         if len(arr) < 4:
             break
+        # TODO: replace with just passing the array
         instruction = instruction_factory(arr[0], register_handler, arr[1], arr[2], arr[3])
         instructions_box.insert(END, instruction.print())
         instruction.run()
