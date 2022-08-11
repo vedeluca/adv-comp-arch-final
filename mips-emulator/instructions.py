@@ -1,6 +1,3 @@
-from registers import *
-
-
 # TODO: figure out how to output more than one instruction
 def instruction_factory(opcode, register_handler, arg1, arg2, arg3):
     if opcode == "add":

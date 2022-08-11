@@ -1,10 +1,12 @@
 from tkinter import *
 from instructions import *
 from registers import *
+from addresses import *
 
 
 def main():
     register_handler = RegisterHandler()
+    address_handler = AddressHandler()
     root = Tk()
     root.geometry("500x150")
     root.title("mips emulator")
@@ -26,12 +28,13 @@ def main():
     run_btn = Button(root, text="Run", command=lambda: run_instructions(input_box,
                                                                         instructions_box,
                                                                         registers_box,
-                                                                        register_handler))
+                                                                        register_handler,
+                                                                        address_handler))
     run_btn.grid(column=1, row=2)
     root.mainloop()
 
 
-def run_instructions(input_box, instructions_box, registers_box, register_handler):
+def run_instructions(input_box, instructions_box, registers_box, register_handler, address_handler):
     instructions_box.delete('1.0', END)
     registers_box.delete('1.0', END)
     instruct_text = input_box.get("1.0", END)
