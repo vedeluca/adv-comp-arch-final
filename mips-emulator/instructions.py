@@ -1,21 +1,21 @@
 def instruction_factory(opcode, arr, register_handler, address_handler):
-    if opcode == "add":
+    if opcode == "+":
         return AddInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
-    elif opcode == "addi":
+    elif opcode == "+n":
         return AddImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
-    elif opcode == "beq":
+    elif opcode == "==":
         return BranchOnEqualInstruction(opcode, register_handler, address_handler, arr[1], arr[2], arr[3])
-    elif opcode == "bne":
+    elif opcode == "!=":
         return BranchOnNotEqualInstruction(opcode, register_handler, address_handler, arr[1], arr[2], arr[3])
-    elif opcode == "j":
+    elif opcode == "go":
         return JumpInstruction(opcode, address_handler, arr[1])
-    elif opcode == "li":
-        return AddImmediateInstruction("addi", register_handler, arr[1], "$0", arr[2])
-    elif opcode == "slt":
+    elif opcode == "=n":
+        return AddImmediateInstruction("+i", register_handler, arr[1], "$0", arr[2])
+    elif opcode == "<":
         return SetLessThanInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
-    elif opcode == "slti":
+    elif opcode == "<n":
         return SetLessThanImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
-    elif opcode == "sub":
+    elif opcode == "-":
         return SubtractInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     else:
         raise ValueError(opcode)

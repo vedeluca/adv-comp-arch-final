@@ -49,7 +49,7 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         i += 1
         arr = lines[i].split()
         opcode = arr[0]
-        if opcode == "syscall":
+        if opcode == "end":
             break
         if opcode.endswith(":"):
             address_handler.set(opcode, i)
@@ -59,8 +59,8 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         i += 1
         arr = lines[i].split()
         opcode = arr[0]
-        if opcode == "syscall":
-            instructions_box.insert(END, "syscall")
+        if opcode == "end":
+            instructions_box.insert(END, "end")
             break
         if not opcode.endswith(":"):
             instruction = instruction_factory(opcode, arr, register_handler, address_handler)
