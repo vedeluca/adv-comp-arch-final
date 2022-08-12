@@ -9,6 +9,8 @@ def instruction_factory(opcode, arr, register_handler, address_handler):
         return BranchOnNotEqualInstruction(opcode, register_handler, address_handler, arr[1], arr[2], arr[3])
     elif opcode == "j":
         return JumpInstruction(opcode, address_handler, arr[1])
+    elif opcode == "li":
+        return AddImmediateInstruction("addi", register_handler, arr[1], "$0", arr[2])
     elif opcode == "slt":
         return SetLessThanInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "slti":
