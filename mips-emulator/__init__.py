@@ -68,7 +68,8 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
             if hasattr(instruction, "run"):
                 instruction.run()
             if hasattr(instruction, "jump"):
-                i = instruction.jump()
+                jump = instruction.jump()
+                i = i if jump == -1 else jump
     registers_box.insert(END, register_handler.print())
 
 

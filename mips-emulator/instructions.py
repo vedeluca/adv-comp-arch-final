@@ -3,6 +3,10 @@ def instruction_factory(opcode, arr, register_handler, address_handler):
         return AddInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "addi":
         return AddImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
+    elif opcode == "beq":
+        return BranchOnEqualInstruction(opcode, register_handler, address_handler, arr[1], arr[2], arr[3])
+    elif opcode == "bne":
+        return BranchOnNotEqualInstruction(opcode, register_handler, address_handler, arr[1], arr[2], arr[3])
     elif opcode == "j":
         return JumpInstruction(opcode, address_handler, arr[1])
     elif opcode == "slt":
@@ -75,6 +79,26 @@ class AddImmediateInstruction(IInstruction):
 
     def run(self):
         self.rt.set_value(self.rs.get_value() + self.immediate)
+
+
+class BranchOnEqualInstruction(IInstruction):
+    def __init__(self, opcode, register_handler, address_handler, arg1, arg2, arg3):
+        super().__init__(opcode, register_handler, arg1, arg2, address_handler.get(f'{arg3}:'))
+
+    def jump(self):
+        if self.rs.get_value() == self.rt.get_value():
+            return self.immediate
+        return -1
+
+
+class BranchOnNotEqualInstruction(IInstruction):
+    def __init__(self, opcode, register_handler, address_handler, arg1, arg2, arg3):
+        super().__init__(opcode, register_handler, arg1, arg2, address_handler.get(f'{arg3}:'))
+
+    def jump(self):
+        if self.rs.get_value() != self.rt.get_value():
+            return self.immediate
+        return -1
 
 
 class JumpInstruction(JInstruction):
