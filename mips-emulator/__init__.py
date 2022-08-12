@@ -53,11 +53,22 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
             break
         if opcode.endswith(":"):
             address_handler.set(opcode, i)
-        else:
-            instruction = instruction_factory(opcode, arr, register_handler, address_handler, i)
-            instructions_box.insert(END, instruction.print())
-            instruction.run()
     addresses_box.insert(END, address_handler.print())
+    i = -1
+    while i < len(lines):
+        i += 1
+        arr = lines[i].split()
+        opcode = arr[0]
+        if opcode == "syscall":
+            instructions_box.insert(END, "syscall")
+            break
+        if not opcode.endswith(":"):
+            instruction = instruction_factory(opcode, arr, register_handler, address_handler)
+            instructions_box.insert(END, instruction.print())
+            if hasattr(instruction, "run"):
+                instruction.run()
+            if hasattr(instruction, "jump"):
+                i = instruction.jump()
     registers_box.insert(END, register_handler.print())
 
 

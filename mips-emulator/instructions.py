@@ -1,8 +1,10 @@
-def instruction_factory(opcode, arr, register_handler, address_handler, position):
+def instruction_factory(opcode, arr, register_handler, address_handler):
     if opcode == "add":
         return AddInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "addi":
         return AddImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
+    elif opcode == "j":
+        return JumpInstruction(opcode, address_handler, arr[1])
     elif opcode == "slt":
         return SetLessThanInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "slti":
@@ -49,13 +51,13 @@ class IInstruction(Instruction):
 
 
 class JInstruction(Instruction):
-    def __init__(self, opcode, arg1):
+    def __init__(self, opcode, address_handler, arg1):
         super().__init__(opcode)
-        self.address = arg1
+        self.address = address_handler.get(f'{arg1}:')
 
     def print(self):
         opcode_print = self.opcode
-        address_print = hex(self.address.get_position())
+        address_print = hex(self.address)
         return f'{opcode_print}, {address_print}\n'
 
 
@@ -73,6 +75,14 @@ class AddImmediateInstruction(IInstruction):
 
     def run(self):
         self.rt.set_value(self.rs.get_value() + self.immediate)
+
+
+class JumpInstruction(JInstruction):
+    def __init__(self, opcode, address_handler, arg1):
+        super().__init__(opcode, address_handler, arg1)
+
+    def jump(self):
+        return self.address
 
 
 class SetLessThanInstruction(RInstruction):
