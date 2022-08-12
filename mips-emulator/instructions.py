@@ -1,15 +1,14 @@
-# TODO: figure out how to output more than one instruction
-def instruction_factory(opcode, register_handler, arg1, arg2, arg3):
+def instruction_factory(opcode, arr, register_handler, address_handler, position):
     if opcode == "add":
-        return AddInstruction(opcode, register_handler, arg1, arg2, arg3)
+        return AddInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "addi":
-        return AddImmediateInstruction(opcode, register_handler, arg1, arg2, arg3)
+        return AddImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "slt":
-        return SetLessThanInstruction(opcode, register_handler, arg1, arg2, arg3)
+        return SetLessThanInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "slti":
-        return SetLessThanImmediateInstruction(opcode, register_handler, arg1, arg2, arg3)
+        return SetLessThanImmediateInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "sub":
-        return SubtractInstruction(opcode, register_handler, arg1, arg2, arg3)
+        return SubtractInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     else:
         raise ValueError(opcode)
 
@@ -56,7 +55,7 @@ class JInstruction(Instruction):
 
     def print(self):
         opcode_print = self.opcode
-        address_print = self.address
+        address_print = hex(self.address.get_position())
         return f'{opcode_print}, {address_print}\n'
 
 
