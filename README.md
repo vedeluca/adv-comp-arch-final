@@ -18,5 +18,6 @@ Advanced Computer Architecture Homework 2 project for Syracuse University
 - $1
 - $2
 - $3
+- $4
 
 Vincent DeLuca, 8/12/2022

@@ -12,7 +12,7 @@ from addresses import *
 # main function containing tkinter ui and main loop
 def main():
     root = Tk()
-    root.geometry("600x150")
+    root.geometry("600x600")
     root.title("mips emulator")
     root.columnconfigure(0, weight=1)
     root.columnconfigure(1, weight=1)
@@ -20,19 +20,19 @@ def main():
     root.columnconfigure(3, weight=1)
     input_label = Label(root, text="Input")
     input_label.grid(column=0, row=0)
-    input_box = Text(root, height=5, width=100)
+    input_box = Text(root, height=30, width=100)
     input_box.grid(column=0, row=1)
     instructions_label = Label(root, text="Instructions")
     instructions_label.grid(column=1, row=0)
-    instructions_box = Text(root, height=5, width=100)
+    instructions_box = Text(root, height=30, width=100)
     instructions_box.grid(column=1, row=1)
     addresses_label = Label(root, text="Addresses")
     addresses_label.grid(column=2, row=0)
-    addresses_box = Text(root, height=5, width=100)
+    addresses_box = Text(root, height=30, width=100)
     addresses_box.grid(column=2, row=1)
     registers_label = Label(root, text="Registers")
     registers_label.grid(column=3, row=0)
-    registers_box = Text(root, height=5, width=100)
+    registers_box = Text(root, height=30, width=100)
     registers_box.grid(column=3, row=1)
     run_btn = Button(root, text="Run", command=lambda: run_instructions(input_box,
                                                                         instructions_box,

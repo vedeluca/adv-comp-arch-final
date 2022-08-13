@@ -16,7 +16,7 @@ def instruction_factory(opcode, arr, register_handler, address_handler):
     elif opcode == "go":
         return JumpInstruction(opcode, address_handler, arr[1])
     elif opcode == "=n":
-        return AddImmediateInstruction("+i", register_handler, arr[1], "$0", arr[2])
+        return AddImmediateInstruction("+n", register_handler, arr[1], "$0", arr[2])
     elif opcode == "<":
         return SetLessThanInstruction(opcode, register_handler, arr[1], arr[2], arr[3])
     elif opcode == "<n":
