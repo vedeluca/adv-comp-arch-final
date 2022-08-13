@@ -1,9 +1,15 @@
+# Vincent DeLuca
+# 8/12/2022
+# Advanced Computer Architecture
+# Syracuse University
+
 from tkinter import *
 from instructions import *
 from registers import *
 from addresses import *
 
 
+# main function containing tkinter ui and main loop
 def main():
     root = Tk()
     root.geometry("600x150")
@@ -36,6 +42,7 @@ def main():
     root.mainloop()
 
 
+# function to handle running the instructions
 def run_instructions(input_box, instructions_box, addresses_box, registers_box):
     register_handler = RegisterHandler()
     address_handler = AddressHandler()
@@ -44,6 +51,7 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
     registers_box.delete('1.0', END)
     instruct_text = input_box.get("1.0", END)
     lines = instruct_text.split('\n')
+    # look for all the addresses
     i = -1
     while i < len(lines):
         i += 1
@@ -54,6 +62,7 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         if opcode.endswith(":"):
             address_handler.set(opcode, i)
     addresses_box.insert(END, address_handler.print())
+    # run all the instructions
     i = -1
     while i < len(lines):
         i += 1
@@ -65,11 +74,10 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         if not opcode.endswith(":"):
             instruction = instruction_factory(opcode, arr, register_handler, address_handler)
             instructions_box.insert(END, instruction.print())
-            if hasattr(instruction, "run"):
-                instruction.run()
-            if hasattr(instruction, "jump"):
-                jump = instruction.jump()
-                i = i if jump == -1 else jump
+            instruction.run()
+            jump = instruction.jump()
+            # if moving to an address, i matches the address position
+            i = i if jump == -1 else jump
     registers_box.insert(END, register_handler.print())
 
 
