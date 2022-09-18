@@ -5,8 +5,6 @@
 
 from tkinter import *
 from instructions import *
-from registers import *
-from addresses import *
 
 
 # main function containing tkinter ui and main loop
@@ -44,8 +42,6 @@ def main():
 
 # function to handle running the instructions
 def run_instructions(input_box, instructions_box, addresses_box, registers_box):
-    register_handler = RegisterHandler()
-    address_handler = AddressHandler()
     instructions_box.delete('1.0', END)
     addresses_box.delete('1.0', END)
     registers_box.delete('1.0', END)
@@ -59,9 +55,9 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         opcode = arr[0]
         if opcode == "end":
             break
-        if opcode.endswith(":"):
-            address_handler.set(opcode, i)
-    addresses_box.insert(END, address_handler.print())
+        # if opcode.endswith(":"):
+            # address_handler.set(opcode, i)
+    # addresses_box.insert(END, address_handler.print())
     # run all the instructions
     i = -1
     while i < len(lines):
@@ -71,14 +67,14 @@ def run_instructions(input_box, instructions_box, addresses_box, registers_box):
         if opcode == "end":
             instructions_box.insert(END, "end")
             break
-        if not opcode.endswith(":"):
-            instruction = instruction_factory(opcode, arr, register_handler, address_handler)
-            instructions_box.insert(END, instruction.print())
-            instruction.run()
-            jump = instruction.jump()
+        # if not opcode.endswith(":"):
+            # instruction = instruction_factory(opcode, arr, register_handler, address_handler)
+            # instructions_box.insert(END, instruction.print())
+            # instruction.run()
+            # jump = instruction.jump()
             # if moving to an address, i matches the address position
-            i = i if jump == -1 else jump
-    registers_box.insert(END, register_handler.print())
+            # i = i if jump == -1 else jump
+    # registers_box.insert(END, register_handler.print())
 
 
 if __name__ == "__main__":
