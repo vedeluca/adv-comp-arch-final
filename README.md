@@ -6,6 +6,7 @@ Advanced Computer Architecture Final project for Syracuse University
 - sub
 - lw
 - sw
+- syscall
 
 
 Vincent DeLuca, 9/18/2022
