@@ -18,8 +18,8 @@ def main():
     root.columnconfigure(0, minsize=400, weight=1)
     root.columnconfigure(1, minsize=400, weight=1)
     root.columnconfigure(2, minsize=400, weight=1)
-    root.columnconfigure(3, minsize=400, weight=2)
-    root.columnconfigure(4, minsize=400, weight=2)
+    root.columnconfigure(3, minsize=400, weight=1)
+    root.columnconfigure(4, minsize=400, weight=1)
 
     columns = list()
     for i in range(20):
