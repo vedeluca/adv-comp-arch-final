@@ -4,9 +4,8 @@
 # Syracuse University
 
 from tkinter import *
-from instructions import *
-from registers import *
-from addresses import *
+from instructions import instruction_factory
+import re
 
 
 # main function containing tkinter ui and main loop
@@ -18,67 +17,46 @@ def main():
     root.columnconfigure(1, weight=1)
     root.columnconfigure(2, weight=2)
     root.columnconfigure(3, weight=2)
-    input_label = Label(root, text="Instructions")
-    input_label.grid(column=0, row=0)
-    input_box = Text(root, height=30, width=100)
-    input_box.grid(column=0, row=1)
-    instructions_label = Label(root, text="Hazards")
-    instructions_label.grid(column=1, row=0)
+    instructions_label = Label(root, text="Instructions")
+    instructions_label.grid(column=0, row=0)
     instructions_box = Text(root, height=30, width=100)
-    instructions_box.grid(column=1, row=1)
-    addresses_label = Label(root, text="Without Forwarding Unit")
-    addresses_label.grid(column=2, row=0)
-    addresses_box = Text(root, height=30, width=200)
-    addresses_box.grid(column=2, row=1)
-    registers_label = Label(root, text="With Forwarding Unit")
-    registers_label.grid(column=3, row=0)
-    registers_box = Text(root, height=30, width=200)
-    registers_box.grid(column=3, row=1)
-    run_btn = Button(root, text="Run", command=lambda: run_instructions(input_box,
-                                                                        instructions_box,
-                                                                        addresses_box,
-                                                                        registers_box))
+    instructions_box.grid(column=0, row=1)
+    hazards_label = Label(root, text="Hazards")
+    hazards_label.grid(column=1, row=0)
+    hazards_box = Text(root, height=30, width=100)
+    hazards_box.grid(column=1, row=1)
+    without_label = Label(root, text="Without Forwarding Unit")
+    without_label.grid(column=2, row=0)
+    without_box = Text(root, height=30, width=200)
+    without_box.grid(column=2, row=1)
+    with_label = Label(root, text="With Forwarding Unit")
+    with_label.grid(column=3, row=0)
+    with_box = Text(root, height=30, width=200)
+    with_box.grid(column=3, row=1)
+    run_btn = Button(root, text="Run", command=lambda: run_instructions(instructions_box,
+                                                                        hazards_box,
+                                                                        without_box,
+                                                                        with_box))
     run_btn.grid(column=0, row=2)
     root.mainloop()
 
 
 # function to handle running the instructions
-def run_instructions(input_box, instructions_box, addresses_box, registers_box):
-    register_handler = RegisterHandler()
-    address_handler = AddressHandler()
-    instructions_box.delete('1.0', END)
-    addresses_box.delete('1.0', END)
-    registers_box.delete('1.0', END)
-    instruct_text = input_box.get("1.0", END)
+def run_instructions(instructions_box, hazards_box, without_box, with_box):
+    hazards_box.delete('1.0', END)
+    without_box.delete('1.0', END)
+    with_box.delete('1.0', END)
+    instruct_text = instructions_box.get("1.0", END)
     lines = instruct_text.split('\n')
     # look for all the addresses
-    i = -1
+    i = 0
     while i < len(lines):
+        arr = re.split("[\s|,|\(|\)]+", lines[i])
         i += 1
-        arr = lines[i].split()
         opcode = arr[0]
-        if opcode == "end":
+        if opcode == "syscall":
             break
-        if opcode.endswith(":"):
-            address_handler.set(opcode, i)
-    addresses_box.insert(END, address_handler.print())
-    # run all the instructions
-    i = -1
-    while i < len(lines):
-        i += 1
-        arr = lines[i].split()
-        opcode = arr[0]
-        if opcode == "end":
-            instructions_box.insert(END, "end")
-            break
-        if not opcode.endswith(":"):
-            instruction = instruction_factory(opcode, arr, register_handler, address_handler)
-            instructions_box.insert(END, instruction.print())
-            instruction.run()
-            jump = instruction.jump()
-            # if moving to an address, i matches the address position
-            i = i if jump == -1 else jump
-    registers_box.insert(END, register_handler.print())
+        test = instruction_factory(arr)
 
 
 if __name__ == "__main__":
