@@ -53,7 +53,7 @@ class RInstruction(Instruction):
         return self.rd
 
     def check_for_hazards(self, problems):
-        for i, problem in reversed(list(enumerate(problems))):
+        for i, problem in list(enumerate(problems)):
             if problem in (self.rs, self.rt, self.rd):
                 self.hazards[problem] = i
         if len(self.hazards) > 0:

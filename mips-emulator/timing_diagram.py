@@ -34,6 +34,21 @@ class TimingDiagramWithoutForwardingUnit(TimingDiagram):
         pipeline = self._add_pipeline(instruction)
         if pipeline is None:
             return
+        hazards = instruction.hazards
+        shift = 0
+        for row in hazards.values():
+            hazard = self._pipelines[row]
+            write = hazard.get_write()
+            dif = write - pipeline.get_length()
+            if dif > shift:
+                shift = dif
+        if shift > 0:
+            pipeline.set_decode(shift)
+        else:
+            pipeline.add_pipe("D")
+        pipeline.add_pipe("X")
+        pipeline.add_pipe("M")
+        pipeline.add_pipe("W")
         self._pipelines.append(pipeline)
 
 
@@ -45,6 +60,10 @@ class TimingDiagramWithForwardingUnit(TimingDiagram):
         pipeline = self._add_pipeline(instruction)
         if pipeline is None:
             return
+        pipeline.add_pipe("D")
+        pipeline.add_pipe("X")
+        pipeline.add_pipe("M")
+        pipeline.add_pipe("W")
         self._pipelines.append(pipeline)
 
 
@@ -69,8 +88,18 @@ class Pipeline:
     def get_decode(self):
         return self._pipes.index("D")
 
+    def get_write(self):
+        return self._pipes.index("W")
+
     def set_fetch(self, index):
         for i in range(index):
             self.add_pipe("")
-        # self.add_pipe("F")
-        self.first_pipeline()
+        self.add_pipe("F")
+
+    def set_decode(self, index):
+        for i in range(index):
+            self.add_pipe("S")
+        self.add_pipe("D")
+
+    def get_length(self):
+        return len(self._pipes)
