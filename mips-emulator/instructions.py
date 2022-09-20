@@ -23,6 +23,7 @@ class Instruction:
     def __init__(self, opcode):
         self.opcode = opcode
         self.hazard = ""
+        self.hazard_location = 0
 
     def print(self):
         return list(self.opcode)
@@ -53,14 +54,11 @@ class RInstruction(Instruction):
         return self.rd
 
     def check_for_hazard(self, problems):
-        if self.rs in problems:
-            self.hazard = self.rs
-            return True
-        elif self.rt in problems:
-            self.hazard = self.rt
-            return True
-        elif self.rd in problems:
-            self.hazard = self.rd
+        for i, problem in reversed(list(enumerate(problems))):
+            if problem in (self.rs, self.rt, self.rd):
+                self.hazard = problem
+                self.hazard_location = i
+                return True
         return False
 
 
@@ -84,9 +82,11 @@ class IInstruction(Instruction):
         return self.rt
 
     def check_for_hazard(self, problems):
-        if self.rt in problems:
-            self.hazard = self.rt
-            return True
+        for i, problem in reversed(list(enumerate(problems))):
+            if problem == self.rt:
+                self.hazard = problem
+                self.hazard_location = i
+                return True
         return False
 
 

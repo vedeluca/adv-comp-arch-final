@@ -41,7 +41,7 @@ def main():
     hazards_label.grid(column=2, row=0)
     hazards_frame = tk.Frame(root, height=30, width=100)
     hazards_frame.grid(column=2, row=1, sticky='nsew')
-    hazards_tree = tree_view_builder(hazards_frame, ("register", "dependency"), 200)
+    hazards_tree = tree_view_builder(hazards_frame, ("dependency", "register"), 200)
     hazards_tree.pack(fill="both", expand=True)
 
     without_label = tk.Label(root, text="Without Forwarding Unit")
@@ -58,8 +58,9 @@ def main():
     with_tree = tree_view_builder(with_frame, columns, 10)
     with_tree.pack(fill="both", expand=True)
 
-    run_btn = tk.Button(root, text="Run", command=lambda: run_instructions(input_box,
-                                                                           instruction_tree))
+    run_btn = tk.Button(root, text="Run", command=lambda: run_instructions(input_box=input_box,
+                                                                           instruction_tree=instruction_tree,
+                                                                           hazards_tree=hazards_tree))
     run_btn.grid(column=0, row=2)
     root.mainloop()
 
@@ -73,12 +74,13 @@ def tree_view_builder(frame, columns, width):
 
 
 # function to handle running the instructions
-def run_instructions(input_box, instruction_tree):
+def run_instructions(input_box, instruction_tree, hazards_tree):
     for item in instruction_tree.get_children():
         instruction_tree.delete(item)
+    for item in hazards_tree.get_children():
+        hazards_tree.delete(item)
     instruct_text = input_box.get("1.0", tk.END)
     lines = instruct_text.split('\n')
-    problems = set()
     instruction_list = list()
     i = 0
     while i < len(lines):
@@ -89,11 +91,11 @@ def run_instructions(input_box, instruction_tree):
             break
         instruction = instruction_factory(arr)
         instruction_tree.insert("", tk.END, values=instruction.print())
+        if instruction.check_for_hazard((inst.problem() for inst in instruction_list)):
+            hazards_tree.insert("", tk.END, values=("Data", instruction.hazard))
+        else:
+            hazards_tree.insert("", tk.END)
         instruction_list.append(instruction)
-        if instruction.check_for_hazard(problems):
-            # make a hazard object
-            continue
-        problems.add(instruction.problem())
 
 
 if __name__ == "__main__":
