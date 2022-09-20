@@ -41,7 +41,7 @@ def main():
     hazards_label.grid(column=2, row=0)
     hazards_frame = tk.Frame(root, height=30, width=100)
     hazards_frame.grid(column=2, row=1, sticky='nsew')
-    hazards_tree = tree_view_builder(hazards_frame, ("dependency", "register"), 200)
+    hazards_tree = tree_view_builder(hazards_frame, ("dependency", "registers"), 200)
     hazards_tree.pack(fill="both", expand=True)
 
     without_label = tk.Label(root, text="Without Forwarding Unit")
@@ -92,7 +92,7 @@ def run_instructions(input_box, instruction_tree, hazards_tree):
         instruction = instruction_factory(arr)
         instruction_tree.insert("", tk.END, values=instruction.print())
         if instruction.check_for_hazard((inst.problem() for inst in instruction_list)):
-            hazards_tree.insert("", tk.END, values=("Data", instruction.hazard))
+            hazards_tree.insert("", tk.END, values=("Data", ", ".join(instruction.hazards.keys())))
         else:
             hazards_tree.insert("", tk.END)
         instruction_list.append(instruction)
