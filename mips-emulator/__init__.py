@@ -16,7 +16,7 @@ import re
 def main():
     root = tk.Tk()
     root.geometry("1600x600")
-    root.title("mips emulator")
+    root.title("MIPS Timing Diagram")
     root.columnconfigure(0, minsize=200, weight=1)
     root.columnconfigure(1, minsize=400, weight=2)
     root.columnconfigure(2, minsize=200, weight=1)
