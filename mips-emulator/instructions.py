@@ -22,7 +22,7 @@ def instruction_factory(arr):
 class Instruction:
     def __init__(self, opcode):
         self.opcode = opcode
-        self.hazard = ""
+        self.hazards = {}
 
     def print(self):
         return list(self.opcode)
@@ -30,7 +30,7 @@ class Instruction:
     def problem(self):
         raise AttributeError
 
-    def check_for_hazard(self, problems):
+    def check_for_hazards(self, problems):
         raise AttributeError
 
 
@@ -52,15 +52,12 @@ class RInstruction(Instruction):
     def problem(self):
         return self.rd
 
-    def check_for_hazard(self, problems):
-        if self.rs in problems:
-            self.hazard = self.rs
+    def check_for_hazards(self, problems):
+        for i, problem in reversed(list(enumerate(problems))):
+            if problem in (self.rs, self.rt, self.rd):
+                self.hazards[problem] = i
+        if len(self.hazards) > 0:
             return True
-        elif self.rt in problems:
-            self.hazard = self.rt
-            return True
-        elif self.rd in problems:
-            self.hazard = self.rd
         return False
 
 
@@ -83,9 +80,11 @@ class IInstruction(Instruction):
     def problem(self):
         return self.rt
 
-    def check_for_hazard(self, problems):
-        if self.rt in problems:
-            self.hazard = self.rt
+    def check_for_hazards(self, problems):
+        for i, problem in list(enumerate(problems)):
+            if problem == self.rt:
+                self.hazards[problem] = i
+        if len(self.hazards) > 0:
             return True
         return False
 
