@@ -22,6 +22,16 @@ def instruction_factory(arr):
 class Instruction:
     def __init__(self, opcode):
         self.opcode = opcode
+        self.hazard = ""
+
+    def print(self):
+        return list(self.opcode)
+
+    def problem(self):
+        raise AttributeError
+
+    def check_for_hazard(self, problems):
+        raise AttributeError
 
 
 class RInstruction(Instruction):
@@ -31,6 +41,28 @@ class RInstruction(Instruction):
         self.rs = arg2
         self.rt = arg3
 
+    def print(self):
+        arr = list()
+        arr.append(self.opcode)
+        arr.append(self.rs)
+        arr.append(self.rt)
+        arr.append(self.rd)
+        return arr
+
+    def problem(self):
+        return self.rd
+
+    def check_for_hazard(self, problems):
+        if self.rs in problems:
+            self.hazard = self.rs
+            return True
+        elif self.rt in problems:
+            self.hazard = self.rt
+            return True
+        elif self.rd in problems:
+            self.hazard = self.rd
+        return False
+
 
 class IInstruction(Instruction):
     def __init__(self, opcode, arg1, arg2, arg3):
@@ -38,6 +70,24 @@ class IInstruction(Instruction):
         self.rt = arg1
         self.rs = arg2
         self.immediate = arg3
+
+    def print(self):
+        arr = list()
+        arr.append(self.opcode)
+        arr.append(self.rs)
+        arr.append(self.rt)
+        arr.append("")
+        arr.append(self.immediate)
+        return arr
+
+    def problem(self):
+        return self.rt
+
+    def check_for_hazard(self, problems):
+        if self.rt in problems:
+            self.hazard = self.rt
+            return True
+        return False
 
 
 class JInstruction(Instruction):
