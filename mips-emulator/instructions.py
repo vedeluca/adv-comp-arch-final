@@ -23,6 +23,9 @@ class Instruction:
     def __init__(self, opcode):
         self.opcode = opcode
 
+    def print(self):
+        return list(self.opcode)
+
 
 class RInstruction(Instruction):
     def __init__(self, opcode, arg1, arg2, arg3):
@@ -31,6 +34,14 @@ class RInstruction(Instruction):
         self.rs = arg2
         self.rt = arg3
 
+    def print(self):
+        arr = list()
+        arr.append(self.opcode)
+        arr.append(self.rs)
+        arr.append(self.rt)
+        arr.append(self.rd)
+        return arr
+
 
 class IInstruction(Instruction):
     def __init__(self, opcode, arg1, arg2, arg3):
@@ -38,6 +49,15 @@ class IInstruction(Instruction):
         self.rt = arg1
         self.rs = arg2
         self.immediate = arg3
+
+    def print(self):
+        arr = list()
+        arr.append(self.opcode)
+        arr.append(self.rs)
+        arr.append(self.rt)
+        arr.append("")
+        arr.append(self.immediate)
+        return arr
 
 
 class JInstruction(Instruction):

@@ -59,9 +59,7 @@ def main():
     with_tree.pack(fill="both", expand=True)
 
     run_btn = tk.Button(root, text="Run", command=lambda: run_instructions(input_box,
-                                                                           hazards_tree,
-                                                                           without_tree,
-                                                                           with_tree))
+                                                                           instruction_tree))
     run_btn.grid(column=0, row=2)
     root.mainloop()
 
@@ -75,10 +73,7 @@ def tree_view_builder(frame, columns, width):
 
 
 # function to handle running the instructions
-def run_instructions(input_box, hazards_tree, without_tree, with_tree):
-    hazards_tree.delete('1.0', tk.END)
-    # without_tree.delete('1.0', tk.END)
-    # with_tree.delete('1.0', tk.END)
+def run_instructions(input_box, instruction_tree):
     instruct_text = input_box.get("1.0", tk.END)
     lines = instruct_text.split('\n')
     # look for all the addresses
@@ -89,8 +84,8 @@ def run_instructions(input_box, hazards_tree, without_tree, with_tree):
         opcode = arr[0]
         if opcode == "syscall":
             break
-        test = instruction_factory(arr)
-        # without_tree.insert("", tk.END, values=arr)
+        instruction = instruction_factory(arr)
+        instruction_tree.insert("", tk.END, values=instruction.print())
 
 
 if __name__ == "__main__":
