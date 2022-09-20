@@ -74,9 +74,12 @@ def tree_view_builder(frame, columns, width):
 
 # function to handle running the instructions
 def run_instructions(input_box, instruction_tree):
+    for item in instruction_tree.get_children():
+        instruction_tree.delete(item)
     instruct_text = input_box.get("1.0", tk.END)
     lines = instruct_text.split('\n')
-    # look for all the addresses
+    problems = set()
+    instruction_list = list()
     i = 0
     while i < len(lines):
         arr = re.split("[\s|,|\(|\)]+", lines[i])
@@ -86,6 +89,11 @@ def run_instructions(input_box, instruction_tree):
             break
         instruction = instruction_factory(arr)
         instruction_tree.insert("", tk.END, values=instruction.print())
+        instruction_list.append(instruction)
+        if instruction.check_for_hazard(problems):
+            # make a hazard object
+            continue
+        problems.add(instruction.problem())
 
 
 if __name__ == "__main__":
