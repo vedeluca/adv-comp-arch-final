@@ -15,16 +15,16 @@ import re
 # main function containing tkinter ui and main loop
 def main():
     root = tk.Tk()
-    root.geometry("1600x600")
+    root.geometry("2400x600")
     root.title("MIPS Timing Diagram")
     root.columnconfigure(0, minsize=200, weight=1)
     root.columnconfigure(1, minsize=400, weight=2)
     root.columnconfigure(2, minsize=200, weight=1)
-    root.columnconfigure(3, minsize=400, weight=2)
-    root.columnconfigure(4, minsize=400, weight=2)
+    root.columnconfigure(3, minsize=800, weight=4)
+    root.columnconfigure(4, minsize=800, weight=4)
 
     columns = list()
-    for i in range(20):
+    for i in range(40):
         columns.append(str(i + 1))
 
     input_label = tk.Label(root, text="Input")
@@ -48,14 +48,14 @@ def main():
 
     without_label = tk.Label(root, text="Without Forwarding Unit")
     without_label.grid(column=3, row=0)
-    without_frame = tk.Frame(root, height=30, width=400)
+    without_frame = tk.Frame(root, height=30, width=800)
     without_frame.grid(column=3, row=1, sticky='nsew')
     without_tree = tree_view_builder(without_frame, columns, 10)
     without_tree.pack(fill="both", expand=True)
 
     with_label = tk.Label(root, text="With Forwarding Unit")
     with_label.grid(column=4, row=0)
-    with_frame = tk.Frame(root, height=30, width=400)
+    with_frame = tk.Frame(root, height=30, width=800)
     with_frame.grid(column=4, row=1, sticky='nsew')
     with_tree = tree_view_builder(with_frame, columns, 10)
     with_tree.pack(fill="both", expand=True)
