@@ -13,85 +13,64 @@ class TimingDiagram:
     def print(self):
         return [pipeline.print() for pipeline in self._pipelines]
 
+    def _add_pipeline(self, instruction):
+        pipeline = Pipeline(instruction)
+        if len(self._pipelines) == 0:
+            pipeline.first_pipeline()
+            self._pipelines.append(pipeline)
+            return None
+        else:
+            previous = self._pipelines[-1]
+            i = previous.get_decode()
+            pipeline.set_fetch(i)
+            return pipeline
+
 
 class TimingDiagramWithoutForwardingUnit(TimingDiagram):
     def __init__(self):
         super().__init__()
+
+    def add_pipeline(self, instruction):
+        pipeline = self._add_pipeline(instruction)
+        if pipeline is None:
+            return
+        self._pipelines.append(pipeline)
 
 
 class TimingDiagramWithForwardingUnit(TimingDiagram):
     def __init__(self):
         super().__init__()
 
+    def add_pipeline(self, instruction):
+        pipeline = self._add_pipeline(instruction)
+        if pipeline is None:
+            return
+        self._pipelines.append(pipeline)
+
 
 class Pipeline:
-    def __init__(self):
-        self._instruction = Instruction("")
+    def __init__(self, instruction):
+        self._instruction = instruction
         self._pipes = list()
 
     def print(self):
-        return [pipe.print() for pipe in self._pipes]
+        return self._pipes
 
+    def add_pipe(self, pipe):
+        self._pipes.append(pipe)
 
-class Pipe:
-    def __init__(self):
-        self._problem_row = 0
-        self._problem_column = 0
+    def first_pipeline(self):
+        self.add_pipe("F")
+        self.add_pipe("D")
+        self.add_pipe("X")
+        self.add_pipe("M")
+        self.add_pipe("W")
 
-    def print(self):
-        raise AttributeError
+    def get_decode(self):
+        return self._pipes.index("D")
 
-    def set_problem(self, row, column):
-        self._problem_row = row
-        self._problem_column = column
-
-    def get_problem_line(self):
-        return [self._problem_row, self._problem_column]
-
-
-class FetchPipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "F"
-
-
-class DecodePipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "D"
-
-
-class ExecutePipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "X"
-
-
-class MemoryPipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "M"
-
-
-class WritePipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "W"
-
-
-class StallPipe(Pipe):
-    def __init__(self):
-        super().__init__()
-
-    def print(self):
-        return "S"
+    def set_fetch(self, index):
+        for i in range(index):
+            self.add_pipe("")
+        # self.add_pipe("F")
+        self.first_pipeline()
